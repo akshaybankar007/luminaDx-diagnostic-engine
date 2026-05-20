@@ -86,10 +86,16 @@ body {
 
 .app-shell {
   display: grid;
-  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: var(--topbar-height) 1fr;
   height: 100vh;
   width: 100vw;
+}
+
+@media (min-width: 768px) {
+  .app-shell {
+    grid-template-columns: var(--sidebar-width) 1fr;
+  }
 }
 
 /* ─── Topbar ─────────────────────────────────────────────────────────────────── */
