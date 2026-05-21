@@ -20,7 +20,7 @@ dotenv.config();
 const __filename  = fileURLToPath(import.meta.url);
 const __dirname   = dirname(__filename);
 const ROOT        = join(__dirname, '..');
-const PUBLIC_DIR  = join(ROOT, 'public');
+const PUBLIC_DIR  = join(ROOT, 'client');
 const UPLOADS_DIR = join(ROOT, 'uploads');
 const REPORTS_DIR = join(ROOT, 'reports');
 
