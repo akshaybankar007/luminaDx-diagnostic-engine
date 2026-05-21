@@ -1,7 +1,7 @@
 /* public/styles.css */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
-/* ─── Design Tokens ─────────────────────────────────────────────────────────── */
+/* ─── Design Tokens   */
 
 :root {
   --slate-950: #020817;
@@ -43,7 +43,7 @@
   --glow-blue: 0 0 24px rgba(59, 130, 246, 0.25);
 }
 
-/* ─── Reset ─────────────────────────────────────────────────────────────────── */
+/* ─── Reset   */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -51,7 +51,7 @@
   padding: 0;
 }
 
-/* ─── Viewport Lock ─────────────────────────────────────────────────────────── */
+/* ─── Viewport Lock   */
 
 html, body {
   height: 100vh;
@@ -67,7 +67,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ─── Scrollable Regions ─────────────────────────────────────────────────────── */
+/* ─── Scrollable Regions  */
 
 .main-content {
   overflow-y: auto;
@@ -82,7 +82,7 @@ body {
   border-radius: 2px;
 }
 
-/* ─── App Shell ──────────────────────────────────────────────────────────────── */
+/* ─── App Shell  */
 
 .app-shell {
   display: grid;
@@ -96,9 +96,21 @@ body {
   .app-shell {
     grid-template-columns: var(--sidebar-width) 1fr;
   }
+
+  .sidebar {
+    position: relative;
+    transform: translateX(0);
+    height: auto;
+  }
+  .main-content {
+    grid-column: 2;
+  }
+  .mobile-toggle {
+    display: none;
+  }
 }
 
-/* ─── Topbar ─────────────────────────────────────────────────────────────────── */
+/* ─── Topbar  */
 
 .topbar {
   grid-column: 1 / -1;
@@ -210,7 +222,7 @@ body {
   letter-spacing: 0.05em;
 }
 
-/* ─── Sidebar ─────────────────────────────────────────────────────────────────── */
+/* ─── Sidebar  */
 
 .sidebar {
   grid-column: 1;
@@ -222,8 +234,16 @@ body {
   padding: 16px 12px;
   gap: 2px;
   overflow: hidden;
+  position: absolute;
+  z-index: 50;
+  height: calc(100vh - var(--topbar-height));
+  transform: translateX(-100%);
+  transition: transform var(--transition-base);
+  width: var(--sidebar-width);
 }
-
+.sidebar.open {
+  transform: translateX(0);
+}
 .sidebar-section-label {
   font-family: var(--font-mono);
   font-size: 9px;
@@ -315,10 +335,10 @@ body {
   border-top: 1px solid var(--glass-border);
 }
 
-/* ─── Main Content ────────────────────────────────────────────────────────────── */
+/* ─── Main Content  */
 
 .main-content {
-  grid-column: 2;
+  grid-column: 1;
   grid-row: 2;
   height: 100%;
   background: var(--slate-950);
@@ -354,7 +374,7 @@ body {
   border-radius: 2px;
 }
 
-/* ─── Cards ──────────────────────────────────────────────────────────────────── */
+/* ─── Cards  */
 
 .card {
   background: var(--glass-bg);
@@ -379,7 +399,7 @@ body {
   color: var(--slate-300);
 }
 
-/* ─── Buttons ────────────────────────────────────────────────────────────────── */
+/* ─── Buttons  */
 
 .btn {
   display: inline-flex;
@@ -429,7 +449,7 @@ body {
   font-size: 14px;
 }
 
-/* ─── Stat / KPI Cells ───────────────────────────────────────────────────────── */
+/* ─── Stat / KPI Cells  */
 
 .kpi-grid {
   display: grid;
@@ -465,7 +485,7 @@ body {
 .kpi-value.green  { color: var(--accent-emerald); }
 .kpi-value.amber  { color: var(--accent-amber); }
 
-/* ─── Badge / Tag ────────────────────────────────────────────────────────────── */
+/* ─── Badge / Tag  */
 
 .badge {
   display: inline-flex;
@@ -486,7 +506,7 @@ body {
 .badge-red    { background: rgba(239,68,68,0.12);  color: var(--accent-red); }
 .badge-slate  { background: var(--slate-800);       color: var(--slate-400); }
 
-/* ─── Page Header ─────────────────────────────────────────────────────────────── */
+/* ─── Page Header  */
 
 .page-header {
   margin-bottom: 32px;
@@ -517,7 +537,7 @@ body {
   line-height: 1.6;
 }
 
-/* ─── Divider ─────────────────────────────────────────────────────────────────── */
+/* ─── Divider ─  */
 
 .divider {
   height: 1px;
@@ -525,7 +545,7 @@ body {
   margin: 24px 0;
 }
 
-/* ─── Utility ─────────────────────────────────────────────────────────────────── */
+/* ─── Utility ── */
 
 .text-mono  { font-family: var(--font-mono); }
 .text-xs    { font-size: 11px; }
@@ -540,7 +560,7 @@ body {
 .gap-3      { gap: 12px; }
 .mt-auto    { margin-top: auto; }
 
-/* ─── Page Transition ────────────────────────────────────────────────────────── */
+/* ─── Page Transition */
 
 .content-inner {
   animation: page-in 300ms ease both;
@@ -551,7 +571,7 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── Form Controls ──────────────────────────────────────────────────────────── */
+/* Form Controls */
 
 .form-group {
   display: flex;
@@ -591,7 +611,7 @@ select.form-input { cursor: pointer; }
 
 textarea.form-input { min-height: 80px; }
 
-/* ─── File Drop Zone ─────────────────────────────────────────────────────────── */
+/* ─── File Drop Zone */
 
 .file-drop-zone {
   border: 1px dashed var(--slate-700);
@@ -611,7 +631,7 @@ textarea.form-input { min-height: 80px; }
   background: rgba(59, 130, 246, 0.04);
 }
 
-/* ─── Analysis Spinner ───────────────────────────────────────────────────────── */
+/* ─── Analysis Spinner  */
 
 .analysis-spinner {
   width: 36px;
