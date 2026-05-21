@@ -200,14 +200,14 @@ app.post('/api/analyse', async (req, res) => {
   const prompt = buildDiagnosticPrompt(enrichedPatient);
 
   try {
-    const response = await genai.models.generateContent({
-      model:    'gemini-2.5-flash',
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature:     0.2,
-        maxOutputTokens: 2048,
-      },
-    });
+const response = await ai.models.generateContent({
+  model: 'gemini-2.5-flash',
+  contents: prompt, // your existing prompt variable
+  config: {
+    systemInstruction: "Your existing system instruction string here",
+    temperature: 0.2, 
+  }
+});
 
     const raw  = response.candidates?.[0]?.content?.parts?.[0]?.text || '';
     const clean = raw.replace(/```json|```/g, '').trim();
@@ -255,7 +255,7 @@ app.post('/api/info', async (req, res) => {
   const { system, turns } = buildInfoPrompt(message, history || []);
 
   try {
-    const response = await genai.models.generateContent({
+    const response = await ai.models.generateContent({
       model:             'gemini-2.5-flash',
       systemInstruction: { parts: [{ text: system }] },
       contents:          turns,
