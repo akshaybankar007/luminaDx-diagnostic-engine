@@ -255,16 +255,50 @@ app.post('/api/info', async (req, res) => {
   const { system, turns } = buildInfoPrompt(message, history || []);
 
   try {
-    const response = await ai.models.generateContent({
-      model:             'gemini-2.5-flash',
-      systemInstruction: { parts: [{ text: system }] },
-      contents:          turns,
-      generationConfig: {
-        temperature:     0.4,
-        maxOutputTokens: 512,
+// Replace the diagnostic generateContent call with this:
+const response = await ai.models.generateContent({
+  model: 'gemini-2.5-flash',
+  contents: prompt, 
+  config: {
+    systemInstruction: "You are an AIH diagnostic engine...", 
+    responseMimeType: "application/json",
+    responseSchema: {
+      type: "OBJECT",
+      properties: {
+        iaihgScore: { type: "INTEGER", description: "Total IAIHG score" },
+        classification: { type: "STRING", description: "e.g., Definite AIH, Probable AIH" },
+        confidence: { type: "INTEGER", description: "Confidence percentage (0-100)" },
+        treatmentIndication: { type: "STRING" },
+        scoreBreakdown: {
+          type: "ARRAY",
+          items: {
+            type: "OBJECT",
+            properties: {
+              criterion: { type: "STRING" },
+              points: { type: "INTEGER" }
+            },
+            required: ["criterion", "points"]
+          }
+        },
+        narrative: { type: "STRING", description: "Clinical narrative summary" },
+        recommendations: {
+          type: "ARRAY",
+          items: { type: "STRING" },
+          description: "List of advisory recommendations"
+        }
       },
-    });
-
+      required: [
+        "iaihgScore", 
+        "classification", 
+        "confidence", 
+        "treatmentIndication", 
+        "scoreBreakdown", 
+        "narrative", 
+        "recommendations"
+      ]
+    }
+  }
+});
     const reply = response.candidates?.[0]?.content?.parts?.[0]?.text
       || infoFallback();
 
