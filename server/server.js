@@ -11,7 +11,7 @@ import { dirname, join } from 'path';
 import { existsSync, mkdirSync } from 'fs';
 import { readFile }     from 'fs/promises';
 import dotenv           from 'dotenv';
-
+import { calculateIAIHG } from './scoring.js';
 import { buildDiagnosticPrompt } from './diagnosticPrompt.js';
 import { buildInfoPrompt, infoFallback } from './infoPrompt.js';
 
