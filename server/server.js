@@ -29,11 +29,11 @@ const REPORTS_DIR = join(ROOT, 'reports');
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 });
 
-// ─── Gemini Client ────────────────────────────────────────────────────────────
+// ─── Gemini Client 
 
 const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// ─── Multer ───────────────────────────────────────────────────────────────────
+// ─── Multer 
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, UPLOADS_DIR),
@@ -48,21 +48,27 @@ const upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
-    const allowed = ['application/pdf', 'image/jpeg', 'image/png'];
-    allowed.includes(file.mimetype)
-      ? cb(null, true)
-      : cb(new Error(`Unsupported file type: ${file.mimetype}`));
+    // Strip JPEG/PNG since your text extraction only handles PDFs
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error(`Unsupported file type. Only PDFs are allowed.`));
+    }
   },
 });
 
-// ─── App ──────────────────────────────────────────────────────────────────────
+// ─── App 
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-// ─── Middleware ───────────────────────────────────────────────────────────────
+// ─── Middleware 
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' ? 'https://your-production-domain.com' : 'http://localhost:3000',
+  credentials: true
+}));
+
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -76,10 +82,11 @@ app.use(rateLimit({
 app.use(session({
   secret:            process.env.SESSION_SECRET || 'medigen-dev-secret-change-in-prod',
   resave:            false,
-  saveUninitialized: true,
+  saveUninitialized: false, // Prevent generating empty sessions for basic visits
   cookie: {
     secure:   process.env.NODE_ENV === 'production',
     httpOnly: true,
+    sameSite: 'strict', // Mitigate CSRF
     maxAge:   1000 * 60 * 60 * 2,
   },
 }));
@@ -98,18 +105,18 @@ app.use((req, _res, next) => {
   next();
 });
 
-// ─── Static ───────────────────────────────────────────────────────────────────
+// ─── Static 
 
 app.use(express.static(PUBLIC_DIR));
 
-// ─── Page Routes ──────────────────────────────────────────────────────────────
+// ─── Page Routes 
 
 app.get('/',         (_req, res) => res.sendFile(join(PUBLIC_DIR, 'home.html')));
 app.get('/intake',   (_req, res) => res.sendFile(join(PUBLIC_DIR, 'intake.html')));
 app.get('/analysis', (_req, res) => res.sendFile(join(PUBLIC_DIR, 'analysis.html')));
 app.get('/report',   (_req, res) => res.sendFile(join(PUBLIC_DIR, 'report.html')));
 
-// ─── Session API ──────────────────────────────────────────────────────────────
+// Session API 
 
 app.get('/api/session', (req, res) => {
   res.json({ clinicalData: req.session.clinicalData });
@@ -179,7 +186,7 @@ app.delete('/api/session', (req, res) => {
   res.json({ ok: true });
 });
 
-// ─── Upload API ───────────────────────────────────────────────────────────────
+// ─── Upload API 
 
 app.post('/api/upload', upload.array('files', 10), (req, res) => {
   if (!req.files?.length) {
@@ -288,7 +295,7 @@ const response = await ai.models.generateContent({
   }
 });
 
-// ─── Info / Chat API ──────────────────────────────────────────────────────────
+// ─── Info / Chat API 
 
 app.post('/api/info', async (req, res) => {
   const { message, history } = req.body;
@@ -355,18 +362,23 @@ const response = await ai.models.generateContent({
   }
 });
 
-// ─── PDF Report API ───────────────────────────────────────────────────────────
+// ─── PDF Report API
 
 app.post('/api/report/pdf', async (req, res) => {
-  const { patient, diagnosticResults: r, sessionId, generatedAt } = req.body;
+  const data = req.session?.clinicalData;
 
-  if (!patient || !r) {
-    return res.status(400).json({ error: 'Patient and diagnostic results are required.' });
+  // 1. Validate against server-stored session, not client payload
+  if (!data || !data.patient || !data.diagnosticResults) {
+    return res.status(400).json({ error: 'No validated session data found.' });
   }
 
-  const filename = `LuminaDx_AIH_${patient.name?.replace(/\s+/g, '_') || 'Report'}_${Date.now()}.pdf`;
+  const { patient, diagnosticResults: r } = data;
 
-  res.setHeader('Content-Type',        'application/pdf');
+  // 2. Strict filename sanitization to prevent HTTP header injection
+  const safeName = (patient.name || 'Unknown').replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50);
+  const filename = `LuminaDx_AIH_${safeName}_${Date.now()}.pdf`;
+
+  res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
 
   const doc = new PDFDocument({
