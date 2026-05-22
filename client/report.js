@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const { Store } = window.LuminaDx;
   const data = Store.get();
 
-  /* ─── Guard ─────────────────────────────────────────────────────────────── */
+  /* ─── Guard  */
 
   if (!data?.diagnosticResults) {
     window.location.href = '/analysis';
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const p = data.patient;
   const r = data.diagnosticResults;
 
-  /* ─── Meta ──────────────────────────────────────────────────────────────── */
+  /* ─── Meta  */
 
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -24,14 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
   setText('report-date',       `${dateStr} ${timeStr}`);
   setText('report-sid',        `SID: ${data.sessionId?.slice(0, 8).toUpperCase() || '—'}`);
 
-  /* ─── Patient ───────────────────────────────────────────────────────────── */
+  /* ─── Patient  */
 
   setText('r-name',  p.name  || '—');
   setText('r-age',   p.age   || '—');
   setText('r-sex',   p.sex   ? capitalize(p.sex) : '—');
   setText('r-score', r.iaihgScore ?? '—');
 
-  /* ─── Serology ──────────────────────────────────────────────────────────── */
+  /* ─── Serology  */
 
   setText('r-ana',  p.anaTiter  || '—');
   setText('r-asma', p.asmaTiter || '—');
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setText('r-alt',  p.alt       || '—');
   setText('r-ast',  p.ast       || '—');
 
-  /* ─── Classification Badge ──────────────────────────────────────────────── */
+  /* ─── Classification Badge  */
 
   const badge = document.getElementById('report-classification-badge');
   const classText = r.classification || '—';
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
-  /* ─── Classification panel ──────────────────────────────────────────────── */
+  /* ─── Classification panel  */
 
   const classEl = document.getElementById('r-classification');
   if (classEl) {
@@ -69,34 +69,48 @@ document.addEventListener('DOMContentLoaded', () => {
   setText('r-confidence',  r.confidence  ? `${r.confidence}%` : '—');
   setText('r-treatment',   r.treatmentIndication || '—');
 
-  /* ─── Score Breakdown ───────────────────────────────────────────────────── */
-
+/* ─── Score Breakdown (Safe DOM) ─── */
   const breakdown = document.getElementById('r-breakdown');
   if (breakdown && Array.isArray(r.scoreBreakdown)) {
-    breakdown.innerHTML = r.scoreBreakdown.map(item => `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--slate-900);border-radius:var(--radius-sm);border:1px solid var(--glass-border)">
-        <span style="font-size:12px;color:var(--slate-400)">${item.criterion}</span>
-        <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:${item.points >= 0 ? 'var(--blue-400)' : 'var(--accent-red)'}">
-          ${item.points >= 0 ? '+' : ''}${item.points}
-        </span>
-      </div>
-    `).join('');
+    breakdown.innerHTML = '';
+    r.scoreBreakdown.forEach(item => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--slate-900);border-radius:var(--radius-sm);border:1px solid var(--glass-border)';
+      
+      const critSpan = document.createElement('span');
+      critSpan.style.cssText = 'font-size:12px;color:var(--slate-400)';
+      critSpan.textContent = item.criterion;
+      
+      const ptSpan = document.createElement('span');
+      ptSpan.style.cssText = `font-family:var(--font-mono);font-size:12px;font-weight:600;color:${item.points >= 0 ? 'var(--blue-400)' : 'var(--accent-red)'}`;
+      ptSpan.textContent = (item.points >= 0 ? '+' : '') + item.points;
+
+      row.appendChild(critSpan);
+      row.appendChild(ptSpan);
+      breakdown.appendChild(row);
+    });
   }
 
-  /* ─── Narrative ─────────────────────────────────────────────────────────── */
-
-  setText('r-narrative', r.narrative || '—');
-
-  /* ─── Recommendations ───────────────────────────────────────────────────── */
-
+  /* ─── Recommendations (Safe DOM) ─── */
   const recs = document.getElementById('r-recommendations');
   if (recs && Array.isArray(r.recommendations)) {
-    recs.innerHTML = r.recommendations.map((rec, i) => `
-      <div style="display:flex;gap:12px;padding:10px 14px;background:var(--slate-900);border-radius:var(--radius-sm);border:1px solid var(--glass-border)">
-        <span style="font-family:var(--font-mono);font-size:10px;color:var(--blue-400);padding-top:2px;flex-shrink:0">${String(i + 1).padStart(2, '0')}</span>
-        <span style="font-size:13px;color:var(--slate-400);line-height:1.6">${rec}</span>
-      </div>
-    `).join('');
+    recs.innerHTML = '';
+    r.recommendations.forEach((rec, i) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;gap:12px;padding:10px 14px;background:var(--slate-900);border-radius:var(--radius-sm);border:1px solid var(--glass-border)';
+      
+      const numSpan = document.createElement('span');
+      numSpan.style.cssText = 'font-family:var(--font-mono);font-size:10px;color:var(--blue-400);padding-top:2px;flex-shrink:0';
+      numSpan.textContent = String(i + 1).padStart(2, '0');
+      
+      const textSpan = document.createElement('span');
+      textSpan.style.cssText = 'font-size:13px;color:var(--slate-400);line-height:1.6';
+      textSpan.textContent = rec;
+      
+      row.appendChild(numSpan);
+      row.appendChild(textSpan);
+      recs.appendChild(row);
+    });
   }
 
   /* ─── PDF Download ──────────────────────────────────────────────────────── */
