@@ -116,11 +116,55 @@ app.get('/api/session', (req, res) => {
 });
 
 app.post('/api/session', (req, res) => {
-  req.session.clinicalData = {
-    ...req.session.clinicalData,
-    ...req.body,
-    updatedAt: new Date().toISOString(),
-  };
+  const { patient, diagnosticResults, iaihgScore } = req.body;
+  const currentData = req.session.clinicalData || {};
+  const updatedData = { ...currentData, updatedAt: new Date().toISOString() };
+
+  // 1. Whitelist & Sanitize Patient Data
+  if (patient && typeof patient === 'object' && !Array.isArray(patient)) {
+    const safePatientKeys = [
+      'name', 'age', 'sex', 'anaTiter', 'asmaTiter', 'antiLkm1', 'igg',
+      'alt', 'ast', 'hbsag', 'antiHcv', 'dili', 'interfaceHepatitis',
+      'rosette', 'histoNotes', 'clinicalNotes', 'ama', 'alp', 'alcohol', 
+      'alcoholIntake', 'otherAutoimmune', 'plasmaCells', 'biliaryChanges', 
+      'atypicalHistology'
+    ];
+    
+    updatedData.patient = updatedData.patient || {};
+    for (const key of safePatientKeys) {
+      if (patient[key] !== undefined && patient[key] !== null) {
+         // Cast to string to prevent nested object injection
+         updatedData.patient[key] = String(patient[key]).trim();
+      }
+    }
+  }
+
+  // 2. Whitelist & Sanitize Diagnostic Results
+  if (diagnosticResults && typeof diagnosticResults === 'object') {
+    updatedData.diagnosticResults = {
+      iaihgScore: Number(diagnosticResults.iaihgScore) || null,
+      classification: String(diagnosticResults.classification || ''),
+      confidence: Number(diagnosticResults.confidence) || null,
+      treatmentIndication: String(diagnosticResults.treatmentIndication || ''),
+      narrative: String(diagnosticResults.narrative || ''),
+      recommendations: Array.isArray(diagnosticResults.recommendations) 
+        ? diagnosticResults.recommendations.map(String) 
+        : [],
+      scoreBreakdown: Array.isArray(diagnosticResults.scoreBreakdown) 
+        ? diagnosticResults.scoreBreakdown.map(item => ({
+            criterion: String(item.criterion || ''),
+            points: Number(item.points || 0)
+          }))
+        : []
+    };
+  }
+
+  // 3. Strict Score Assignment
+  if (iaihgScore !== undefined && iaihgScore !== null) {
+    updatedData.iaihgScore = Number(iaihgScore);
+  }
+
+  req.session.clinicalData = updatedData;
   res.json({ ok: true, clinicalData: req.session.clinicalData });
 });
 
@@ -159,7 +203,7 @@ app.post('/api/upload', upload.array('files', 10), (req, res) => {
   res.json({ ok: true, files: meta });
 });
 
-// ─── Analyse API ──────────────────────────────────────────────────────────────
+// ─── Analyse API
 
 app.post('/api/analyse', async (req, res) => {
   const { patient, sessionId } = req.body;
