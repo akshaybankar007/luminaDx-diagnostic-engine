@@ -48,15 +48,14 @@ const upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
-    // Strip JPEG/PNG since your text extraction only handles PDFs
-    if (file.mimetype === 'application/pdf') {
+    const allowed = ['application/pdf', 'image/jpeg', 'image/png'];
+    if (allowed.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error(`Unsupported file type. Only PDFs are allowed.`));
+      cb(new Error(`Unsupported file type. Allowed: PDF, JPG, PNG.`));
     }
   },
 });
-
 // ─── App 
 
 const app  = express();
