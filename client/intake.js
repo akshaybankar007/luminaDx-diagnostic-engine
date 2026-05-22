@@ -24,6 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
     setVal('rosette',             p.rosette);
     setVal('histo-notes',         p.histoNotes);
     setVal('clinical-notes',      p.clinicalNotes);
+    setVal('ama',                 p.ama);
+    setVal('alp-level',           p.alp);
+    setVal('alcohol-intake',      p.alcohol);
+    setVal('other-autoimmune',    p.otherAutoimmune);
+    setVal('plasma-cells',        p.plasmaCells);
+    setVal('biliary-changes',     p.biliaryChanges);
+    setVal('atypical-histology',  p.atypicalHistology);
   }
 
   /* ─── File Drop Zone ───────────────────────────────────────────────────── */
@@ -112,6 +119,13 @@ document.addEventListener('DOMContentLoaded', () => {
       rosette:            getVal('rosette'),
       histoNotes:         getVal('histo-notes'),
       clinicalNotes:      getVal('clinical-notes'),
+      ama:                getVal('ama'),
+      alpLevel:           getVal('alp-level'),
+      alcoholIntake:      getVal('alcohol-intake'),
+      otherAutoimmune:    getVal('other-autoimmune'),
+      plasmaCells:        getVal('plasma-cells'),
+      biliaryChanges:     getVal('biliary-changes'),
+      atypicalHistology:  getVal('atypical-histology'),
     };
 
     if (!patient.name || !patient.age || !patient.sex) {
