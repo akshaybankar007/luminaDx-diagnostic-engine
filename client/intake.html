@@ -74,15 +74,14 @@
         <p class="page-subtitle">Enter patient demographics, clinical findings, serological markers, and upload supporting documents.</p>
       </div>
 
-      <form id="intake-form" autocomplete="off">
+<form id="intake-form" autocomplete="off">
 
-        <!-- Section: Demographics -->
         <div class="card" style="margin-bottom:16px">
           <div class="card-header">
             <span class="card-title">Demographics</span>
             <span class="badge badge-slate">Required</span>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+          <div class="grid-stack md-grid-3">
             <div class="form-group">
               <label class="form-label">Patient Name</label>
               <input class="form-input" type="text" id="patient-name" placeholder="Full name" />
@@ -103,13 +102,12 @@
           </div>
         </div>
 
-        <!-- Section: Serology -->
         <div class="card" style="margin-bottom:16px">
           <div class="card-header">
             <span class="card-title">Serological Markers</span>
             <span class="badge badge-blue">IAIHG Criteria</span>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px">
+          <div class="grid-stack md-grid-4" style="margin-bottom:16px">
             <div class="form-group">
               <label class="form-label">ANA Titer</label>
               <select class="form-input" id="ana-titer">
@@ -139,8 +137,6 @@
                 <option value=">=1:80">&ge;1:80</option>
               </select>
             </div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;margin-bottom:16px">
             <div class="form-group">
               <label class="form-label">AMA</label>
               <select class="form-input" id="ama">
@@ -150,12 +146,15 @@
               </select>
             </div>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:16px">
+          <div class="grid-stack md-grid-4">
+            <div class="form-group">
+              <label class="form-label">IgG (g/L)</label>
+              <input class="form-input" type="number" id="igg-level" placeholder="e.g. 18" min="0" step="0.1" />
+            </div>
             <div class="form-group">
               <label class="form-label">ALP (U/L)</label>
               <input class="form-input" type="number" id="alp-level" placeholder="e.g. 150" min="0" />
             </div>
-          </div>
             <div class="form-group">
               <label class="form-label">ALT (U/L)</label>
               <input class="form-input" type="number" id="alt-level" placeholder="e.g. 120" min="0" />
@@ -167,13 +166,12 @@
           </div>
         </div>
 
-        <!-- Section: History and Exclusions -->
         <div class="card" style="margin-bottom:16px">
           <div class="card-header">
-            <span class="card-title">Viral Hepatitis Exclusion</span>
+            <span class="card-title">History & Exclusions</span>
             <span class="badge badge-amber">Differential</span>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+          <div class="grid-stack md-grid-4" style="margin-bottom:16px">
             <div class="form-group">
               <label class="form-label">Hepatitis B (HBsAg)</label>
               <select class="form-input" id="hbsag">
@@ -200,31 +198,33 @@
               </select>
             </div>
           </div>
+          <div class="grid-stack md-grid-4">
+            <div class="form-group">
+              <label class="form-label">Alcohol Intake</label>
+              <select class="form-input" id="alcohol-intake">
+                <option value="">Select</option>
+                <option value="<25g/day">&lt; 25g / day</option>
+                <option value=">60g/day">&gt; 60g / day</option>
+                <option value="moderate">25-60g / day</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Other Autoimmune</label>
+              <select class="form-input" id="other-autoimmune">
+                <option value="">Select</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+          </div>
         </div>
-      <div class="form-group">
-          <label class="form-label">Alcohol Intake</label>
-          <select class="form-input" id="alcohol-intake">
-            <option value="">Select</option>
-            <option value="<25g/day">&lt; 25g / day</option>
-            <option value=">60g/day">&gt; 60g / day</option>
-            <option value="moderate">25-60g / day</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Other Autoimmune</label>
-          <select class="form-input" id="other-autoimmune">
-            <option value="">Select</option>
-            <option value="no">No</option>
-            <option value="yes">Yes</option>
-          </select>
-        </div>
-        <!-- Section: Histology -->
+
         <div class="card" style="margin-bottom:16px">
           <div class="card-header">
             <span class="card-title">Histological Findings</span>
             <span class="badge badge-slate">Biopsy</span>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div class="grid-stack md-grid-3" style="margin-bottom:16px">
             <div class="form-group">
               <label class="form-label">Interface Hepatitis</label>
               <select class="form-input" id="interface-hepatitis">
@@ -243,6 +243,32 @@
                 <option value="not-done">Biopsy Not Done</option>
               </select>
             </div>
+            <div class="form-group">
+              <label class="form-label">Plasma Cells</label>
+              <select class="form-input" id="plasma-cells">
+                <option value="">Select</option>
+                <option value="absent">Absent</option>
+                <option value="present">Present</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid-stack md-grid-3" style="margin-bottom:16px">
+            <div class="form-group">
+              <label class="form-label">Biliary Changes</label>
+              <select class="form-input" id="biliary-changes">
+                <option value="">Select</option>
+                <option value="absent">Absent</option>
+                <option value="present">Present</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Atypical Histology</label>
+              <select class="form-input" id="atypical-histology">
+                <option value="">Select</option>
+                <option value="absent">Absent</option>
+                <option value="present">Present</option>
+              </select>
+            </div>
           </div>
           <div class="form-group">
             <label class="form-label">Additional Histological Notes</label>
@@ -250,34 +276,6 @@
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:16px;margin-bottom:16px">
-        <div class="form-group">
-          <label class="form-label">Plasma Cells</label>
-          <select class="form-input" id="plasma-cells">
-            <option value="">Select</option>
-            <option value="absent">Absent</option>
-            <option value="present">Present</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Biliary Changes</label>
-          <select class="form-input" id="biliary-changes">
-            <option value="">Select</option>
-            <option value="absent">Absent</option>
-            <option value="present">Present</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Atypical Histology</label>
-          <select class="form-input" id="atypical-histology">
-            <option value="">Select</option>
-            <option value="absent">Absent</option>
-            <option value="present">Present</option>
-          </select>
-        </div>
-      </div>
-
-        <!-- Section: Clinical Notes & File Upload -->
         <div class="card" style="margin-bottom:24px">
           <div class="card-header">
             <span class="card-title">Clinical Notes & Documents</span>
@@ -299,7 +297,6 @@
           </div>
         </div>
 
-        <!-- Submit -->
         <div style="display:flex;align-items:center;justify-content:space-between">
           <div id="form-error" style="font-family:var(--font-mono);font-size:11px;color:var(--accent-red);display:none"></div>
           <div style="margin-left:auto;display:flex;gap:12px">

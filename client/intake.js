@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
       histoNotes:         getVal('histo-notes'),
       clinicalNotes:      getVal('clinical-notes'),
       ama:                getVal('ama'),
-      alpLevel:           getVal('alp-level'),
+      alp:              getVal('alp-level'),
       alcoholIntake:      getVal('alcohol-intake'),
       otherAutoimmune:    getVal('other-autoimmune'),
       plasmaCells:        getVal('plasma-cells'),
