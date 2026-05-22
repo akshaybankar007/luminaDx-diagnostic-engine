@@ -286,12 +286,12 @@
             <textarea class="form-input" id="clinical-notes" rows="4" placeholder="Summarise relevant history, symptom onset, prior treatments, comorbidities…" style="resize:vertical"></textarea>
           </div>
           <div class="form-group">
-            <label class="form-label">Upload Documents (PDF)</label>
+            <label class="form-label">Upload Documents (PDF, images)</label>
             <div class="file-drop-zone" id="file-drop-zone">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--slate-500);margin-bottom:8px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               <div style="font-size:13px;color:var(--slate-400)">Drop files here or <label for="file-input" style="color:var(--blue-400);cursor:pointer;text-decoration:underline">browse</label></div>
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--slate-600);margin-top:4px">PDF Only · max 10MB each</div>
-              <input type="file" id="file-input" multiple accept=".pdf" style="display:none" />
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--slate-600);margin-top:4px">PDF · JPG · PNG · max 10MB each</div>
+              <input type="file" id="file-input" multiple accept=".pdf,.jpg,.jpeg,.png" style="display:none" />
             </div>
             <div id="file-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px"></div>
           </div>
