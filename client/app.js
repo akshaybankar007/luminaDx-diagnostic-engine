@@ -1,6 +1,6 @@
 // public/app.js
 
-/* ─── Constants ──────────────────────────────────────────────────────────────── */
+/* ─── Constants  */
 
 const STORAGE_KEY = 'clinicalData';
 
@@ -16,7 +16,7 @@ const DEFAULT_CLINICAL_DATA = {
   updatedAt: null,
 };
 
-/* ─── LocalStorage API ───────────────────────────────────────────────────────── */
+/* ─── LocalStorage API  */
 
 const Store = {
   init() {
@@ -35,17 +35,17 @@ const Store = {
 
   get() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = sessionStorage.getItem(STORAGE_KEY);
       return raw ? JSON.parse(raw) : null;
     } catch {
-      console.error('[Store] Failed to parse clinicalData from localStorage.');
+      console.error('[Store] Failed to parse clinicalData from sessionStorage.');
       return null;
     }
   },
 
   set(data) {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (e) {
       console.error('[Store] Failed to write clinicalData:', e);
     }
@@ -73,7 +73,7 @@ const Store = {
   },
 };
 
-/* ─── Navigation: Active State ───────────────────────────────────────────────── */
+/* ─── Navigation: Active State  */
 
 function initNavigation() {
   const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
@@ -88,7 +88,7 @@ function initNavigation() {
   });
 }
 
-/* ─── Sidebar: Unlock Steps Based on Progress ───────────────────────────────── */
+/* ─── Sidebar: Unlock Steps Based on Progress  */
 
 function syncNavState(data) {
   const analysisLink = document.querySelector('.nav-item[data-page="analysis"]');
@@ -105,7 +105,7 @@ function syncNavState(data) {
   }
 }
 
-/* ─── Session ID Display ─────────────────────────────────────────────────────── */
+/* ─── Session ID Display  */
 
 function renderSessionId(data) {
   const el = document.getElementById('topbar-session-id');
@@ -121,7 +121,7 @@ function renderSessionId(data) {
   }
 }
 
-/* ─── Clear Session Handler ──────────────────────────────────────────────────── */
+/* ─── Clear Session Handler  */
 
 function initClearSession() {
   const btn = document.getElementById('clear-session-btn');
@@ -148,7 +148,7 @@ function initClearSession() {
   });
 }
 
-/* ─── Sync localStorage → Server Session (best-effort) ──────────────────────── */
+/* ─── Sync localStorage → Server Session (best-effort)  */
 
 async function syncToServer(data) {
   try {
@@ -162,7 +162,7 @@ async function syncToServer(data) {
   }
 }
 
-/* ─── Boot ───────────────────────────────────────────────────────────────────── */
+/* ─── Boot  */
 
 document.addEventListener('DOMContentLoaded', () => {
   const data = Store.init();
