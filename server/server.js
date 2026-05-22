@@ -219,8 +219,11 @@ app.post('/api/analyse', async (req, res) => {
   }
 
   // Optionally enrich with parsed text from uploaded PDFs
-  let enrichedPatient = { ...patient };
+ let enrichedPatient = { ...patient };
   const uploads = req.session.clinicalData?.uploadedFiles || [];
+  
+  // This array will hold the text prompt AND the image binaries
+  const geminiPayloadParts = []; 
 
   if (uploads.length > 0) {
     try {
@@ -228,34 +231,47 @@ app.post('/api/analyse', async (req, res) => {
       const pdfTexts = [];
 
       for (const file of uploads) {
-        if (file.mimetype === 'application/pdf' && existsSync(file.path)) {
+        if (!existsSync(file.path)) continue;
+
+        if (file.mimetype === 'application/pdf') {
           const buffer = await readFile(file.path);
           const parsed = await pdfParse(buffer);
-          pdfTexts.push(parsed.text.slice(0, 2000)); // cap per file
+          pdfTexts.push(parsed.text.slice(0, 2000));
+        } else if (file.mimetype.startsWith('image/')) {
+          // Process Hepatology Images for Gemini Vision
+          const base64Data = (await readFile(file.path)).toString('base64');
+          geminiPayloadParts.push({
+            inlineData: {
+              data: base64Data,
+              mimeType: file.mimetype
+            }
+          });
         }
       }
 
       if (pdfTexts.length > 0) {
         enrichedPatient.clinicalNotes =
           (enrichedPatient.clinicalNotes || '') +
-          '\n\n--- Extracted from uploaded documents ---\n' +
+          '\n\n--- Extracted from uploaded PDFs ---\n' +
           pdfTexts.join('\n\n');
       }
-    } catch (parseErr) {
-      // Non-fatal: proceed without PDF enrichment
-      console.warn('[Analyse] PDF parse failed:', parseErr.message);
+    } catch (err) {
+      console.warn('[Analyse] File processing error:', err.message);
     }
   }
 
   const scoringResult = calculateIAIHG(enrichedPatient);
-  const prompt = buildDiagnosticPrompt(enrichedPatient, scoringResult);
+  const basePrompt = buildDiagnosticPrompt(enrichedPatient, scoringResult);
+  
+  // Inject the core text prompt at the front of the payload array
+  geminiPayloadParts.unshift({ text: basePrompt });
 
   try {
-const response = await ai.models.generateContent({
-  model: 'gemini-2.5-flash',
-  contents: prompt, // your existing prompt variable
-  config: {
-    systemInstruction: "Your existing system instruction string here",
+    const response = await genai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: geminiPayloadParts, // Sending multimodal array instead of a plain string
+      config: {
+        systemInstruction: "You are an AIH diagnostic engine...",
     temperature: 0.2, 
   }
 });
