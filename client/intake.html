@@ -10,7 +10,7 @@
 
 <div class="app-shell">
 
-  <!-- ── Topbar ──────────────────────────────────────────────────────────── -->
+  <!-- ── Topbar  -->
   <header class="topbar">
     <div class="topbar-brand">
       <div class="brand-icon">⬡</div>
@@ -30,7 +30,7 @@
     </div>
   </header>
 
-  <!-- ── Sidebar ─────────────────────────────────────────────────────────── -->
+  <!-- ── Sidebar  -->
   <nav class="sidebar">
     <span class="sidebar-section-label">Workflow</span>
     <a href="/" class="nav-item" data-page="home">
@@ -64,7 +64,7 @@
     </div>
   </nav>
 
-  <!-- ── Main Content ─────────────────────────────────────────────────────── -->
+  <!-- ── Main Content  -->
   <main class="main-content">
     <div class="content-inner">
 
@@ -140,11 +140,22 @@
               </select>
             </div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
-            <div class="form-group">
-              <label class="form-label">IgG (g/L)</label>
-              <input class="form-input" type="number" id="igg-level" placeholder="e.g. 18.5" step="0.1" min="0" />
-            </div>
+<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;margin-bottom:16px">
+  <div class="form-group">
+    <label class="form-label">AMA</label>
+    <select class="form-input" id="ama">
+      <option value="">Select</option>
+      <option value="negative">Negative</option>
+      <option value="positive">Positive</option>
+    </select>
+  </div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:16px">
+  <div class="form-group">
+    <label class="form-label">ALP (U/L)</label>
+    <input class="form-input" type="number" id="alp-level" placeholder="e.g. 150" min="0" />
+  </div>
+</div>
             <div class="form-group">
               <label class="form-label">ALT (U/L)</label>
               <input class="form-input" type="number" id="alt-level" placeholder="e.g. 120" min="0" />
