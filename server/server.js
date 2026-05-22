@@ -197,7 +197,8 @@ app.post('/api/analyse', async (req, res) => {
     }
   }
 
-  const prompt = buildDiagnosticPrompt(enrichedPatient);
+  const scoringResult = calculateIAIHG(enrichedPatient);
+  const prompt = buildDiagnosticPrompt(enrichedPatient, scoringResult);
 
   try {
 const response = await ai.models.generateContent({
