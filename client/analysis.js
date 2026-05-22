@@ -95,33 +95,52 @@ document.addEventListener('DOMContentLoaded', () => {
       else classEl.classList.add('text-muted');
     }
 
-    // Score breakdown
+// Score breakdown (Safe DOM rendering)
     const breakdown = document.getElementById('score-breakdown');
     if (breakdown && Array.isArray(result.scoreBreakdown)) {
-      breakdown.innerHTML = result.scoreBreakdown.map(item => `
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--slate-900);border-radius:var(--radius-sm);border:1px solid var(--glass-border)">
-          <span style="font-size:12px;color:var(--slate-400)">${item.criterion}</span>
-          <span style="font-family:var(--font-mono);font-size:12px;color:${item.points >= 0 ? 'var(--blue-400)' : 'var(--accent-red)'};font-weight:600">
-            ${item.points >= 0 ? '+' : ''}${item.points}
-          </span>
-        </div>
-      `).join('');
+      breakdown.innerHTML = ''; // Clear container
+      result.scoreBreakdown.forEach(item => {
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--slate-900);border-radius:var(--radius-sm);border:1px solid var(--glass-border)';
+        
+        const critSpan = document.createElement('span');
+        critSpan.style.cssText = 'font-size:12px;color:var(--slate-400)';
+        critSpan.textContent = item.criterion;
+        
+        const ptSpan = document.createElement('span');
+        ptSpan.style.cssText = `font-family:var(--font-mono);font-size:12px;color:${item.points >= 0 ? 'var(--blue-400)' : 'var(--accent-red)'};font-weight:600`;
+        ptSpan.textContent = (item.points >= 0 ? '+' : '') + item.points;
+        
+        row.appendChild(critSpan);
+        row.appendChild(ptSpan);
+        breakdown.appendChild(row);
+      });
     }
 
     // Narrative
     const narrative = document.getElementById('ai-narrative');
     if (narrative) narrative.textContent = result.narrative || 'No narrative returned.';
 
-    // Recommendations
+// Recommendations (Safe DOM rendering)
     const recs = document.getElementById('ai-recommendations');
     if (recs) {
+      recs.innerHTML = '';
       if (Array.isArray(result.recommendations)) {
-        recs.innerHTML = result.recommendations.map(r => `
-          <div style="display:flex;gap:10px;margin-bottom:10px">
-            <span style="color:var(--blue-400);flex-shrink:0;margin-top:2px">→</span>
-            <span>${r}</span>
-          </div>
-        `).join('');
+        result.recommendations.forEach(r => {
+          const row = document.createElement('div');
+          row.style.cssText = 'display:flex;gap:10px;margin-bottom:10px';
+          
+          const arrow = document.createElement('span');
+          arrow.style.cssText = 'color:var(--blue-400);flex-shrink:0;margin-top:2px';
+          arrow.textContent = '→';
+          
+          const text = document.createElement('span');
+          text.textContent = r;
+          
+          row.appendChild(arrow);
+          row.appendChild(text);
+          recs.appendChild(row);
+        });
       } else {
         recs.textContent = result.recommendations || '—';
       }

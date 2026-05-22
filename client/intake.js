@@ -79,12 +79,15 @@ document.addEventListener('DOMContentLoaded', () => {
     selectedFiles.forEach((f, i) => {
       const row = document.createElement('div');
       row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--slate-900);border:1px solid var(--glass-border);border-radius:var(--radius-sm)';
+// Render the static HTML skeleton first
       row.innerHTML = `
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" style="color:var(--blue-400);flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        <span style="font-size:12px;color:var(--slate-300);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.name}</span>
+        <span class="file-name-safe" style="font-size:12px;color:var(--slate-300);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
         <span style="font-family:var(--font-mono);font-size:10px;color:var(--slate-500)">${(f.size/1024).toFixed(0)} KB</span>
         <button type="button" data-idx="${i}" style="background:none;border:none;color:var(--slate-500);cursor:pointer;font-size:14px;padding:0;line-height:1" class="remove-file">✕</button>
       `;
+      // Safely inject the filename as pure text
+      row.querySelector('.file-name-safe').textContent = f.name;
       fileList.appendChild(row);
     });
 
