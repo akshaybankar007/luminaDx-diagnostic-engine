@@ -10,9 +10,9 @@
 
 <div class="app-shell">
 
-  <!-- ── Topbar ──────────────────────────────────────────────────────────── -->
   <header class="topbar">
     <div class="topbar-brand">
+      <button id="mobile-menu-btn" class="topbar-btn mobile-toggle" style="margin-right: 8px; padding: 4px 8px; border: none; background: transparent; font-size: 16px;">☰</button>
       <div class="brand-icon">⬡</div>
       <span class="brand-name">Lumina<span>Dx</span></span>
     </div>
@@ -35,7 +35,6 @@
     </div>
   </header>
 
-  <!-- ── Sidebar ─────────────────────────────────────────────────────────── -->
   <nav class="sidebar">
     <span class="sidebar-section-label">Workflow</span>
 
@@ -94,11 +93,9 @@
     </div>
   </nav>
 
-  <!-- ── Main Content ─────────────────────────────────────────────────────── -->
   <main class="main-content">
     <div class="content-inner">
 
-      <!-- Page Header -->
       <div class="page-header">
         <div class="page-eyebrow">Clinical Dashboard</div>
         <h1 class="page-title">Autoimmune Hepatitis Diagnostic Platform</h1>
@@ -108,7 +105,6 @@
         </p>
       </div>
 
-      <!-- KPI Row -->
       <div class="kpi-grid" style="margin-bottom:28px">
         <div class="kpi-cell">
           <div class="kpi-label">Diagnostic Engine</div>
@@ -128,10 +124,8 @@
         </div>
       </div>
 
-      <!-- Two-column layout -->
-      <div style="display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start">
+      <div class="grid-stack md-grid-home" style="align-items:start">
 
-        <!-- Left: Clinical Overview card -->
         <div class="card">
           <div class="card-header">
             <span class="card-title">Clinical Overview</span>
@@ -146,7 +140,7 @@
 
           <div class="divider"></div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
+          <div class="grid-stack md-grid-2" style="margin-bottom:24px">
             <div>
               <div class="kpi-label" style="margin-bottom:6px">Diagnostic Criteria</div>
               <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
@@ -191,7 +185,6 @@
           </a>
         </div>
 
-        <!-- Right: Workflow steps card -->
         <div class="card">
           <div class="card-header">
             <span class="card-title">Workflow</span>
@@ -246,8 +239,6 @@
     </div>
   </main>
 
-</div><!-- /app-shell -->
-
-<script src="/app.js"></script>
+</div><script src="/app.js"></script>
 </body>
 </html>
