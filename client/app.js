@@ -164,6 +164,8 @@ async function syncToServer(data) {
 
 /* ─── Boot  */
 
+/* ─── Boot  */
+
 document.addEventListener('DOMContentLoaded', () => {
   const data = Store.init();
 
@@ -171,6 +173,23 @@ document.addEventListener('DOMContentLoaded', () => {
   syncNavState(data);
   renderSessionId(data);
   initClearSession();
+
+  // Mobile Sidebar Toggle Logic
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const sidebar = document.querySelector('.sidebar');
+  
+  if (menuBtn && sidebar) {
+    menuBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+
+    // Close drawer when clicking outside
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth < 768 && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+  }
 
   // Expose Store globally so intake.js / analysis.js can use it without re-importing
   window.LuminaDx = { Store, syncToServer };
