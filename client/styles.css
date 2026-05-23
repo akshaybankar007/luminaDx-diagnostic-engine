@@ -684,3 +684,17 @@ p,
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+/* Responsive Grid Utilities */
+.grid-stack {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .md-grid-2 { grid-template-columns: 1fr 1fr; }
+  .md-grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .md-grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .md-grid-6 { grid-template-columns: repeat(6, 1fr); }
+  .md-grid-home { grid-template-columns: 1fr 360px; }
+}
