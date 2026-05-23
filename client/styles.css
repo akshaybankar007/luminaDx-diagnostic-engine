@@ -82,33 +82,6 @@ body {
   border-radius: 2px;
 }
 
-/* ─── App Shell  */
-
-.app-shell {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: var(--topbar-height) 1fr;
-  height: 100vh;
-  width: 100vw;
-}
-
-@media (min-width: 768px) {
-  .app-shell {
-    grid-template-columns: var(--sidebar-width) 1fr;
-  }
-
-  .sidebar {
-    position: relative;
-    transform: translateX(0);
-    height: auto;
-  }
-  .main-content {
-    grid-column: 2;
-  }
-  .mobile-toggle {
-    display: none;
-  }
-}
 
 /* ─── Topbar  */
 
@@ -684,6 +657,35 @@ p,
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+
+/* ─── App Shell  */
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: var(--topbar-height) 1fr;
+  height: 100vh;
+  width: 100vw;
+}
+
+@media (min-width: 768px) {
+  .app-shell {
+    grid-template-columns: var(--sidebar-width) 1fr;
+  }
+
+  .sidebar {
+    position: relative;
+    transform: translateX(0);
+    height: auto;
+  }
+  .main-content {
+    grid-column: 2;
+  }
+  .mobile-toggle {
+    display: none;
+  }
+}
+
 /* Responsive Grid Utilities */
 .grid-stack {
   display: grid;
