@@ -700,3 +700,20 @@ p,
   .md-grid-6 { grid-template-columns: repeat(6, 1fr); }
   .md-grid-home { grid-template-columns: 1fr 360px; }
 }
+
+@media (max-width: 767px) {
+  .topbar-brand {
+    width: auto;
+    border-right: none;
+    padding: 0 12px;
+  }
+  
+  .topbar-center, 
+  .topbar-actions .session-id {
+    display: none;
+  }
+  
+  .content-inner {
+    padding: 24px 16px;
+  }
+}
