@@ -174,20 +174,29 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSessionId(data);
   initClearSession();
 
-  // Mobile Sidebar Toggle Logic
+// Mobile Sidebar Toggle Logic
   const menuBtn = document.getElementById('mobile-menu-btn');
   const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
   
-  if (menuBtn && sidebar) {
-    menuBtn.addEventListener('click', () => {
+  if (menuBtn && sidebar && overlay) {
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
     });
 
-    // Close drawer when clicking outside
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth < 768 && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+
+    // Close after nav click
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
         sidebar.classList.remove('open');
-      }
+        overlay.classList.remove('active');
+      });
     });
   }
 
