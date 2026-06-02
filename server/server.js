@@ -104,9 +104,15 @@ app.use((req, _res, next) => {
   next();
 });
 
-// ─── Static 
+// ─── Static. isne bahut pareshan kara hai mujhe
 
-app.use(express.static(PUBLIC_DIR));
+app.use(express.static(PUBLIC_DIR, {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.css') || path.endsWith('.js') || path.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    }
+  }
+}));
 
 // ─── Page Routes 
 
