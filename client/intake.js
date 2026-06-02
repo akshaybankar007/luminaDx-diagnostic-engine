@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const { Store, syncToServer } = window.LuminaDx;
   const data = Store.get();
 
-  /* ─── Restore saved values ─────────────────────────────────────────────── */
+  //Restore saved values
 
   if (data?.patient) {
     const p = data.patient;
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setVal('atypical-histology',  p.atypicalHistology);
   }
 
-  /* ─── File Drop Zone ───────────────────────────────────────────────────── */
+  //File Drop Zone 
 
   const dropZone  = document.getElementById('file-drop-zone');
   const fileInput = document.getElementById('file-input');
