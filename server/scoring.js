@@ -1,5 +1,3 @@
-// server/scoring.js
-
 export function calculateIAIHG(p) {
   let score = 0;
   const breakdown = [];
@@ -11,10 +9,9 @@ export function calculateIAIHG(p) {
     }
   };
 
-  // 1. Sex
   if (p.sex === 'female') add('Female Sex', 2);
 
-  // 2. ALP:AST/ALT Ratio
+  // ALP:AST/ALT Ratio
   const astOrAlt = Number(p.ast) || Number(p.alt);
   const alp = Number(p.alp);
   if (alp && astOrAlt) {
@@ -23,7 +20,7 @@ export function calculateIAIHG(p) {
     else if (ratio > 3.0) add('ALP:AST/ALT Ratio > 3.0', -2);
   }
 
-  // 3. IgG (Assuming standard ULN = 16 g/L)
+  // IgG (Assuming standard ULN = 16 g/L)
   const igg = Number(p.igg);
   if (igg) {
     const ratio = igg / 16;
@@ -32,7 +29,7 @@ export function calculateIAIHG(p) {
     else if (ratio >= 1.0) add('IgG 1.0-1.5x Normal', 1);
   }
 
-  // 4. Autoantibodies (Max of ANA, ASMA, Anti-LKM1)
+  // Autoantibodies (Max of ANA, ASMA, Anti-LKM1)
   const scoreTiter = (t) => t === '>=1:160' || t === '>=1:80' ? 3 : t === '1:80' ? 2 : t === '1:40' ? 1 : 0;
   const anaPts  = scoreTiter(p.anaTiter);
   const asmaPts = scoreTiter(p.asmaTiter);
@@ -43,37 +40,50 @@ export function calculateIAIHG(p) {
   else if (maxPts === 2) add('Autoantibodies 1:80', 2);
   else if (maxPts === 1) add('Autoantibodies 1:40', 1);
 
-  // 5. AMA
+  // AMA
   if (p.ama === 'positive') add('AMA Positive', -4);
 
-  // 6. Viral Markers
+  // Viral Markers
   if (p.hbsag === 'positive' || p.antiHcv === 'positive') add('Viral Markers Positive', -3);
   else if (p.hbsag === 'negative' && p.antiHcv === 'negative') add('Viral Markers Negative', 3);
 
-  // 7. Drug History
+  // Drug History
   if (p.dili === 'yes') add('Positive Drug History', -4);
   else if (p.dili === 'no') add('Negative Drug History', 1);
 
-  // 8. Alcohol Intake
-  if (p.alcohol === '<25g/day') add('Alcohol < 25g/day', 2);
-  else if (p.alcohol === '>60g/day') add('Alcohol > 60g/day', -2);
+  // Alcohol Intake
+  if (p.alcoholIntake === '<25g/day') add('Alcohol < 25g/day', 2);
+  else if (p.alcoholIntake === '>60g/day') add('Alcohol > 60g/day', -2);
 
-  // 9. Histology
+  // Other Autoimmune Diseases
+  if (p.otherAutoimmune === 'yes') add('Concurrent Autoimmune Disease', 2);
+
+
+  if (p.hla === 'yes' || p.hla === 'positive') add('HLA DR3/DR4', 1);
+
+  // 11. Histology
   let histoCount = 0;
+  const biopsyDone = p.interfaceHepatitis !== 'not-done' && p.rosette !== 'not-done';
+
   if (p.interfaceHepatitis === 'present') { add('Interface Hepatitis', 3); histoCount++; }
   if (p.plasmaCells === 'present') { add('Lymphoplasmacytic Infiltrate', 1); histoCount++; }
   if (p.rosette === 'present') { add('Rosette Formation', 1); histoCount++; }
   if (p.biliaryChanges === 'present') add('Biliary Changes', -3);
   if (p.atypicalHistology === 'present') add('Atypical Histology', -3);
 
-  if (histoCount === 0 && p.interfaceHepatitis === 'absent' && p.plasmaCells === 'absent' && p.rosette === 'absent') {
+  if (biopsyDone && histoCount === 0 && p.interfaceHepatitis === 'absent' && p.plasmaCells === 'absent' && p.rosette === 'absent') {
     add('No typical histological features', -5);
   }
 
-  // 10. Classification Classification Thresholds
+  // Classification Thresholds
   let classification = 'Not AIH';
-  if (score > 15) classification = 'Definite AIH';
-  else if (score >= 10) classification = 'Probable AIH';
+  // Adjust threshold if patient is already on treatment
+  const isPostTreatment = p.treatmentStatus === 'post' || p.treatmentStatus === 'on-treatment';
+  const definiteThreshold = isPostTreatment ? 17 : 15;
+  const probableThreshold = isPostTreatment ? 12 : 10;
+
+  if (score > definiteThreshold) classification = 'Definite AIH';
+  else if (score >= probableThreshold) classification = 'Probable AIH';
 
   return { score, classification, breakdown };
 }
