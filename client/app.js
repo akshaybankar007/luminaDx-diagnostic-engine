@@ -182,13 +182,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (menuBtn && sidebar && overlay) {
     menuBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      sidebar.classList.toggle('open');
+      const isDeviSidebarOpen = sidebar.classList.toggle('open');
       overlay.classList.toggle('active');
+
+      document.body.style.overflow = isDeviSidebarOpen ? 'hidden' : '';
     });
 
     overlay.addEventListener('click', () => {
       sidebar.classList.remove('open');
       overlay.classList.remove('active');
+      document.body.style.overflow = '';
     });
 
     // Close after nav click
