@@ -193,14 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
       overlay.classList.remove('active');
       document.body.style.overflow = '';
     });
-
-    // Close after nav click
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', () => {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('active');
-      });
-    });
   }
 
   // Expose Store globally so intake.js / analysis.js can use it without re-importing
