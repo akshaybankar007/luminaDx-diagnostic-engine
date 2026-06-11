@@ -688,7 +688,7 @@ p,
 }
 
 /* Desktop */
-@media (min-width: 769px) {
+@media (min-width: 768.01px) {
   .md-grid-2 { grid-template-columns: 1fr 1fr; }
   .md-grid-3 { grid-template-columns: repeat(3, 1fr); }
   .md-grid-4 { grid-template-columns: repeat(4, 1fr); }
