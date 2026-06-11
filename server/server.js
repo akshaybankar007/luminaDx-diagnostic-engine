@@ -12,6 +12,7 @@ import { readFile } from 'fs/promises';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
 import createMemoryStore from 'memorystore';
+import pdfParse from 'pdf-parse/lib/pdf-parse.js';
 import { calculateIAIHG } from './scoring.js';
 import { buildDiagnosticPrompt } from './diagnosticPrompt.js';
 import { buildInfoPrompt, infoFallback } from './infoPrompt.js';
@@ -165,7 +166,7 @@ app.post('/api/analyse', async (req, res) => {
 
   if (uploads.length > 0) {
     try {
-      const { default: pdfParse } = await import('pdf-parse/lib/pdf-parse.js');
+      const parsed = await pdfParse(buffer);
       const pdfTexts = [];
       for (const file of uploads) {
         if (!existsSync(file.path)) continue;
@@ -174,7 +175,7 @@ app.post('/api/analyse', async (req, res) => {
           const parsed = await pdfParse(buffer);
           pdfTexts.push(parsed.text.slice(0, 2000));
         } else if (file.mimetype.startsWith('image/')) {
-          // still buffering to ram for simplicity. akshay in nagpur should use genai file api for large files to prevent v8 heap crashing
+          // for simplicity, buffering to ram kiya hai. I should use genai file api for large files to prevent v8 heap crashing
           const base64Data = (await readFile(file.path)).toString('base64');
           geminiPayloadParts.push({ inlineData: { data: base64Data, mimeType: file.mimetype } });
         }
