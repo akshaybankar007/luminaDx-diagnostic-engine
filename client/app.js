@@ -1,7 +1,3 @@
-// public/app.js
-
-/* ─── Constants  */
-
 const STORAGE_KEY = 'clinicalData';
 
 const DEFAULT_CLINICAL_DATA = {
@@ -16,7 +12,7 @@ const DEFAULT_CLINICAL_DATA = {
   updatedAt: null,
 };
 
-/* ─── LocalStorage API  */
+// LocalStorage API
 
 const Store = {
   init() {
@@ -73,7 +69,7 @@ const Store = {
   },
 };
 
-/* ─── Navigation: Active State  */
+//Navigation: Active State
 
 function initNavigation() {
   const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
@@ -88,7 +84,7 @@ function initNavigation() {
   });
 }
 
-/* ─── Sidebar: Unlock Steps Based on Progress  */
+//Sidebar: Unlock Steps Based on Progress 
 
 function syncNavState(data) {
   const analysisLink = document.querySelector('.nav-item[data-page="analysis"]');
@@ -105,7 +101,7 @@ function syncNavState(data) {
   }
 }
 
-/* ─── Session ID Display  */
+//Session ID Display
 
 function renderSessionId(data) {
   const el = document.getElementById('topbar-session-id');
@@ -121,7 +117,7 @@ function renderSessionId(data) {
   }
 }
 
-/* ─── Clear Session Handler  */
+// Clear Session Handler  
 
 function initClearSession() {
   const btn = document.getElementById('clear-session-btn');
@@ -148,7 +144,7 @@ function initClearSession() {
   });
 }
 
-/* ─── Sync localStorage → Server Session (best-effort)  */
+//Sync localStorage -> Server Session 
 
 async function syncToServer(data) {
   try {
@@ -162,9 +158,8 @@ async function syncToServer(data) {
   }
 }
 
-/* ─── Boot  */
+//Boot 
 
-/* ─── Boot  */
 
 document.addEventListener('DOMContentLoaded', () => {
   const data = Store.init();
@@ -193,6 +188,16 @@ document.addEventListener('DOMContentLoaded', () => {
       overlay.classList.remove('active');
       document.body.style.overflow = '';
     });
+
+    window.addEventListener('resize', () => {
+      // If someone rotates the tablet to landscape, kill the mobile overlay
+      if (window.innerWidth > 768) {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = ''; 
+      }
+    });
+
   }
 
   // Expose Store globally so intake.js / analysis.js can use it without re-importing
