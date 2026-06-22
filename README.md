@@ -2,7 +2,7 @@
 
 > An AI-assisted clinical decision support system for Autoimmune Hepatitis (AIH), because relying solely on human doctors is a statistically dangerous game.
 
-Live Demo Link: 
+Live Demo Link: https://luminadx-aih-diagnostic-platform.onrender.com
 
 ## ✨ Features
 * **Deterministic IAIHG Scoring:** Does the math so we don't have to.
