@@ -1,12 +1,8 @@
-// public/report.js
-
 document.addEventListener('DOMContentLoaded', () => {
   const { Store } = window.LuminaDx;
   const data = Store.get();
 
-  /* ─── Guard  */
-
-  if (!data?.diagnosticResults) {
+  if (!data?.diagnosticResults){
     window.location.href = '/analysis';
     return;
   }
@@ -14,33 +10,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const p = data.patient;
   const r = data.diagnosticResults;
 
-  /* ─── Meta  */
+  /* Meta  */
 
   const now = new Date();
-  const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-  const timeStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  const dateStr = now.toLocaleDateString('en-GB',{ day: '2-digit', month: 'short', year: 'numeric' });
+  const timeStr = now.toLocaleTimeString('en-GB',{ hour: '2-digit', minute: '2-digit' });
 
-  setText('report-timestamp',  `Generated: ${dateStr} ${timeStr}`);
-  setText('report-date',       `${dateStr} ${timeStr}`);
-  setText('report-sid',        `SID: ${data.sessionId?.slice(0, 8).toUpperCase() || '—'}`);
+  setText('report-timestamp', `Generated: ${dateStr} ${timeStr}`);
+  setText('report-date', `${dateStr} ${timeStr}`);
+  setText('report-sid', `SID: ${data.sessionId?.slice(0, 8).toUpperCase() || '—'}`);
 
-  /* ─── Patient  */
+  /* Patient  */
 
-  setText('r-name',  p.name  || '—');
-  setText('r-age',   p.age   || '—');
-  setText('r-sex',   p.sex   ? capitalize(p.sex) : '—');
+  setText('r-name', p.name  || '—');
+  setText('r-age',p.age   || '—');
+  setText('r-sex', p.sex   ? capitalize(p.sex) : '—');
   setText('r-score', r.iaihgScore ?? '—');
 
-  /* ─── Serology  */
+  /* Serology  */
 
   setText('r-ana',  p.anaTiter  || '—');
   setText('r-asma', p.asmaTiter || '—');
-  setText('r-lkm',  p.antiLkm1  || '—');
-  setText('r-igg',  p.igg       || '—');
-  setText('r-alt',  p.alt       || '—');
-  setText('r-ast',  p.ast       || '—');
+  setText('r-lkm',  p.antiLkm1 || '—');
+  setText('r-igg',  p.igg  || '—');
+  setText('r-alt',  p.alt || '—');
+  setText('r-ast',  p.ast || '—');
 
-  /* ─── Classification Badge  */
+  /* Classification Badge  */
 
   const badge = document.getElementById('report-classification-badge');
   const classText = r.classification || '—';
@@ -48,13 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
     badge.textContent = classText.toUpperCase();
     const c = classText.toLowerCase();
     badge.className = 'badge ' + (
-      c.includes('definite')  ? 'badge-green' :
-      c.includes('probable')  ? 'badge-amber' :
+      c.includes('definite') ? 'badge-green' :
+      c.includes('probable') ? 'badge-amber' :
       'badge-slate'
     );
   }
 
-  /* ─── Classification panel  */
+  /* Classification panel  */
 
   const classEl = document.getElementById('r-classification');
   if (classEl) {
@@ -66,10 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   setText('r-score-total', r.iaihgScore ?? '—');
-  setText('r-confidence',  r.confidence  ? `${r.confidence}%` : '—');
-  setText('r-treatment',   r.treatmentIndication || '—');
+  setText('r-confidence', r.confidence  ? `${r.confidence}%` : '—');
+  setText('r-treatment', r.treatmentIndication || '—');
+  setText('r-narrative', r.narrative || '-')
 
-/* ─── Score Breakdown (Safe DOM) ─── */
+/* Score Breakdown*/
   const breakdown = document.getElementById('r-breakdown');
   if (breakdown && Array.isArray(r.scoreBreakdown)) {
     breakdown.innerHTML = '';
@@ -91,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ─── Recommendations (Safe DOM) ─── */
+  /* Recommendations*/
   const recs = document.getElementById('r-recommendations');
   if (recs && Array.isArray(r.recommendations)) {
     recs.innerHTML = '';
@@ -113,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ─── PDF Download ──────────────────────────────────────────────────────── */
+  /* PDF Download */
 
   document.getElementById('download-pdf-btn').addEventListener('click', async () => {
     const btn = document.getElementById('download-pdf-btn');
@@ -135,9 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!res.ok) throw new Error(`Server returned ${res.status}`);
 
       const blob = await res.blob();
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href     = url;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href  = url;
       a.download = `LuminaDx_Report_${p.name?.replace(/\s+/g, '_') || 'Patient'}_${now.toISOString().slice(0, 10)}.pdf`;
       a.click();
       URL.revokeObjectURL(url);
@@ -153,13 +150,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  /* ─── Print ─────────────────────────────────────────────────────────────── */
 
   document.getElementById('print-btn').addEventListener('click', () => {
     window.print();
   });
 
-  /* ─── New Assessment ────────────────────────────────────────────────────── */
 
   document.getElementById('new-assessment-btn').addEventListener('click', e => {
     e.preventDefault();
@@ -168,13 +163,12 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = '/';
   });
 
-  /* ─── Helpers ───────────────────────────────────────────────────────────── */
+  /* Helpers */
 
   function setText(id, val) {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
   }
-
   function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }

@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LuminaDx — Patient Intake</title>
+  <title>LuminaDx Patient Intake</title>
   <link rel="stylesheet" href="/styles.css?v=1.0.3" />
 </head>
 <body>
-
 <div class="app-shell">
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
-
   <header class="topbar">
     <div class="topbar-brand">
-      <button id="mobile-menu-btn" class="topbar-btn mobile-toggle" style="margin-right: 8px; padding: 4px 8px; border: none; background: transparent; font-size: 16px;">☰</button>
-      <div class="brand-icon">⬡</div>
+      <button id="mobile-menu-btn" class="topbar-btn mobile-toggle" style="margin-right: 8px; padding: 4px 8px; border: none; background: transparent; font-size: 16px;"> </button>
+      <div class="brand-icon"> </div>
       <span class="brand-name">Lumina<span>Dx</span></span>
     </div>
     <div class="topbar-center">
@@ -26,11 +24,10 @@
       </div>
     </div>
     <div class="topbar-actions">
-      <span class="session-id" id="topbar-session-id">SID: —</span>
-      <a href="/" class="topbar-btn">← Overview</a>
+      <span class="session-id" id="topbar-session-id">SID: </span>
+      <a href="/" class="topbar-btn"> Overview</a>
     </div>
   </header>
-
   <nav class="sidebar">
     <span class="sidebar-section-label">Workflow</span>
     <a href="/" class="nav-item" data-page="home">
@@ -60,21 +57,17 @@
     </a>
     <div class="sidebar-footer">
       <div class="kpi-label" style="padding:0 8px">Build</div>
-      <div style="padding:4px 8px;font-family:var(--font-mono);font-size:10px;color:var(--slate-600)">LuminaDx AIH · v1.0.0</div>
+      <div style="padding:4px 8px;font-family:var(--font-mono);font-size:10px;color:var(--slate-600)">LuminaDx AIH v1.0.0</div>
     </div>
   </nav>
-
   <main class="main-content">
     <div class="content-inner">
-
       <div class="page-header">
-        <div class="page-eyebrow">Step 01 — Data Collection</div>
+        <div class="page-eyebrow">Step 01 Data Collection</div>
         <h1 class="page-title">Patient Intake</h1>
         <p class="page-subtitle">Enter patient demographics, clinical findings, serological markers, and upload supporting documents.</p>
       </div>
-
       <form id="intake-form" autocomplete="off">
-
         <div class="card" style="margin-bottom:16px">
           <div class="card-header">
             <span class="card-title">Demographics</span>
@@ -82,15 +75,15 @@
           </div>
           <div class="grid-stack md-grid-3">
             <div class="form-group">
-              <label class="form-label">Patient Name</label>
+              <label class="form-label" for="patient-name">Patient Name</label>
               <input class="form-input" type="text" id="patient-name" placeholder="Full name" />
             </div>
             <div class="form-group">
-              <label class="form-label">Age</label>
+              <label class="form-label" for="patient-age">Age</label>
               <input class="form-input" type="number" id="patient-age" placeholder="Years" min="1" max="120" />
             </div>
             <div class="form-group">
-              <label class="form-label">Sex</label>
+              <label class="form-label" for="patient-sex">Sex</label>
               <select class="form-input" id="patient-sex">
                 <option value="">Select</option>
                 <option value="female">Female</option>
@@ -100,7 +93,6 @@
             </div>
           </div>
         </div>
-
         <div class="card" style="margin-bottom:16px">
           <div class="card-header">
             <span class="card-title">Serological Markers</span>
@@ -108,7 +100,7 @@
           </div>
           <div class="grid-stack md-grid-4" style="margin-bottom:16px">
             <div class="form-group">
-              <label class="form-label">ANA Titer</label>
+              <label class="form-label" for="ana-titer">ANA Titer</label>
               <select class="form-input" id="ana-titer">
                 <option value="">Select</option>
                 <option value="negative">Negative</option>
@@ -118,7 +110,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">ASMA Titer</label>
+              <label class="form-label" for="asma-titer">ASMA Titer</label>
               <select class="form-input" id="asma-titer">
                 <option value="">Select</option>
                 <option value="negative">Negative</option>
@@ -128,7 +120,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Anti-LKM1</label>
+              <label class="form-label" for="anti-lkm1">Anti-LKM1</label>
               <select class="form-input" id="anti-lkm1">
                 <option value="">Select</option>
                 <option value="negative">Negative</option>
@@ -137,7 +129,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">AMA</label>
+              <label class="form-label" for="ama">AMA</label>
               <select class="form-input" id="ama">
                 <option value="">Select</option>
                 <option value="negative">Negative</option>
@@ -147,24 +139,23 @@
           </div>
           <div class="grid-stack md-grid-4">
             <div class="form-group">
-              <label class="form-label">IgG (g/L)</label>
+              <label class="form-label" for="igg-level">IgG (g/L)</label>
               <input class="form-input" type="number" id="igg-level" placeholder="e.g. 18" min="0" step="0.1" />
             </div>
             <div class="form-group">
-              <label class="form-label">ALP (U/L)</label>
+              <label class="form-label" for="alp-level">ALP (U/L)</label>
               <input class="form-input" type="number" id="alp-level" placeholder="e.g. 150" min="0" />
             </div>
             <div class="form-group">
-              <label class="form-label">ALT (U/L)</label>
+              <label class="form-label" for="alt-level">ALT (U/L)</label>
               <input class="form-input" type="number" id="alt-level" placeholder="e.g. 120" min="0" />
             </div>
             <div class="form-group">
-              <label class="form-label">AST (U/L)</label>
+              <label class="form-label" for="ast-level">AST (U/L)</label>
               <input class="form-input" type="number" id="ast-level" placeholder="e.g. 95" min="0" />
             </div>
           </div>
         </div>
-
         <div class="card" style="margin-bottom:16px">
           <div class="card-header">
             <span class="card-title">History & Exclusions</span>
@@ -172,7 +163,7 @@
           </div>
           <div class="grid-stack md-grid-4" style="margin-bottom:16px">
             <div class="form-group">
-              <label class="form-label">Hepatitis B (HBsAg)</label>
+              <label class="form-label" for="hbsag">Hepatitis B (HBsAg)</label>
               <select class="form-input" id="hbsag">
                 <option value="">Select</option>
                 <option value="negative">Negative</option>
@@ -180,7 +171,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Hepatitis C (Anti-HCV)</label>
+              <label class="form-label" for="anti-hcv">Hepatitis C (Anti-HCV)</label>
               <select class="form-input" id="anti-hcv">
                 <option value="">Select</option>
                 <option value="negative">Negative</option>
@@ -188,7 +179,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Drug-Induced Liver Injury</label>
+              <label class="form-label" for="dili">Drug-Induced Liver Injury</label>
               <select class="form-input" id="dili">
                 <option value="">Select</option>
                 <option value="no">No</option>
@@ -199,7 +190,7 @@
           </div>
           <div class="grid-stack md-grid-4">
             <div class="form-group">
-              <label class="form-label">Alcohol Intake</label>
+              <label class="form-label" for="alcohol-intake">Alcohol Intake</label>
               <select class="form-input" id="alcohol-intake">
                 <option value="">Select</option>
                 <option value="<25g/day">&lt; 25g / day</option>
@@ -208,7 +199,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Other Autoimmune</label>
+              <label class="form-label" for="other-autoimmune">Other Autoimmune</label>
               <select class="form-input" id="other-autoimmune">
                 <option value="">Select</option>
                 <option value="no">No</option>
@@ -217,7 +208,6 @@
             </div>
           </div>
         </div>
-
         <div class="card" style="margin-bottom:16px">
           <div class="card-header">
             <span class="card-title">Histological Findings</span>
@@ -225,7 +215,7 @@
           </div>
           <div class="grid-stack md-grid-3" style="margin-bottom:16px">
             <div class="form-group">
-              <label class="form-label">Interface Hepatitis</label>
+              <label class="form-label" for="interface-hepatitis">Interface Hepatitis</label>
               <select class="form-input" id="interface-hepatitis">
                 <option value="">Select</option>
                 <option value="absent">Absent</option>
@@ -234,7 +224,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Rosette Formation</label>
+              <label class="form-label" for="rosette">Rosette Formation</label>
               <select class="form-input" id="rosette">
                 <option value="">Select</option>
                 <option value="absent">Absent</option>
@@ -243,7 +233,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Plasma Cells</label>
+              <label class="form-label" for="plasma-cells">Plasma Cells</label>
               <select class="form-input" id="plasma-cells">
                 <option value="">Select</option>
                 <option value="absent">Absent</option>
@@ -253,7 +243,7 @@
           </div>
           <div class="grid-stack md-grid-3" style="margin-bottom:16px">
             <div class="form-group">
-              <label class="form-label">Biliary Changes</label>
+              <label class="form-label" for="biliary-changes">Biliary Changes</label>
               <select class="form-input" id="biliary-changes">
                 <option value="">Select</option>
                 <option value="absent">Absent</option>
@@ -261,7 +251,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Atypical Histology</label>
+              <label class="form-label" for="atypical-histology">Atypical Histology</label>
               <select class="form-input" id="atypical-histology">
                 <option value="">Select</option>
                 <option value="absent">Absent</option>
@@ -270,48 +260,44 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Additional Histological Notes</label>
-            <textarea class="form-input" id="histo-notes" rows="3" placeholder="Describe any additional findings: plasma cell infiltrate, emperipolesis, fibrosis grade…" style="resize:vertical"></textarea>
+            <label class="form-label" for="histo-notes">Additional Histological Notes</label>
+            <textarea class="form-input" id="histo-notes" rows="3" placeholder="Describe any additional findings: plasma cell infiltrate, emperipolesis, fibrosis grade" style="resize:vertical"></textarea>
           </div>
         </div>
-
         <div class="card" style="margin-bottom:24px">
           <div class="card-header">
             <span class="card-title">Clinical Notes & Documents</span>
             <span class="badge badge-slate">Optional</span>
           </div>
           <div class="form-group" style="margin-bottom:16px">
-            <label class="form-label">Free-text Clinical Summary</label>
-            <textarea class="form-input" id="clinical-notes" rows="4" placeholder="Summarise relevant history, symptom onset, prior treatments, comorbidities…" style="resize:vertical"></textarea>
+            <label class="form-label" for="clinical-notes">Free-text Clinical Summary</label>
+            <textarea class="form-input" id="clinical-notes" rows="4" placeholder="Summarise relevant history, symptom onset, prior treatments, comorbidities" style="resize:vertical"></textarea>
           </div>
           <div class="form-group">
-            <label class="form-label">Upload Documents (PDF, images)</label>
+            <label class="form-label" for="file-input">Upload Documents (PDF, images)</label>
             <div class="file-drop-zone" id="file-drop-zone">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--slate-500);margin-bottom:8px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               <div style="font-size:13px;color:var(--slate-400)">Drop files here or <label for="file-input" style="color:var(--blue-400);cursor:pointer;text-decoration:underline">browse</label></div>
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--slate-600);margin-top:4px">PDF · JPG · PNG · max 10MB each</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--slate-600);margin-top:4px">PDF JPG PNG max 10MB each</div>
               <input type="file" id="file-input" multiple accept=".pdf,.jpg,.jpeg,.png" style="display:none" />
             </div>
             <div id="file-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px"></div>
           </div>
         </div>
-
         <div style="display:flex;align-items:center;justify-content:space-between">
           <div id="form-error" style="font-family:var(--font-mono);font-size:11px;color:var(--accent-red);display:none"></div>
           <div style="margin-left:auto;display:flex;gap:12px">
-            <a href="/" class="btn btn-ghost">← Back</a>
+            <a href="/" class="btn btn-ghost">Back</a>
             <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
               Run Analysis
             </button>
           </div>
         </div>
-
       </form>
     </div>
   </main>
 </div>
-
 <script src="/app.js?v=1.0.3"></script>
 <script src="/intake.js?v=1.0.3"></script>
 </body>
