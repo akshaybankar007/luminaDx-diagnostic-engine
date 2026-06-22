@@ -1,36 +1,33 @@
-// public/intake.js
-
 document.addEventListener('DOMContentLoaded', () => {
   const { Store, syncToServer } = window.LuminaDx;
   const data = Store.get();
 
-  //Restore saved values
-
   if (data?.patient) {
     const p = data.patient;
-    setVal('patient-name',        p.name);
-    setVal('patient-age',         p.age);
-    setVal('patient-sex',         p.sex);
-    setVal('ana-titer',           p.anaTiter);
-    setVal('asma-titer',          p.asmaTiter);
-    setVal('anti-lkm1',           p.antiLkm1);
-    setVal('igg-level',           p.igg);
-    setVal('alt-level',           p.alt);
-    setVal('ast-level',           p.ast);
-    setVal('hbsag',               p.hbsag);
-    setVal('anti-hcv',            p.antiHcv);
-    setVal('dili',                p.dili);
+    setVal('patient-name', p.name);
+    setVal('patient-age', p.age);
+    setVal('patient-sex',p.sex);
+    setVal('ana-titer', p.anaTiter);
+    setVal('asma-titer',  p.asmaTiter);
+    setVal('anti-lkm1', p.antiLkm1);
+    setVal('igg-level',  p.igg);
+    setVal('alt-level', p.alt);
+    setVal('ast-level', p.ast);
+    setVal('hbsag', p.hbsag);
+    setVal('anti-hcv', p.antiHcv);
+    setVal('dili', p.dili);
     setVal('interface-hepatitis', p.interfaceHepatitis);
-    setVal('rosette',             p.rosette);
-    setVal('histo-notes',         p.histoNotes);
-    setVal('clinical-notes',      p.clinicalNotes);
-    setVal('ama',                 p.ama);
-    setVal('alp-level',           p.alp);
-    setVal('alcohol-intake',      p.alcohol);
-    setVal('other-autoimmune',    p.otherAutoimmune);
-    setVal('plasma-cells',        p.plasmaCells);
-    setVal('biliary-changes',     p.biliaryChanges);
-    setVal('atypical-histology',  p.atypicalHistology);
+    setVal('rosette',  p.rosette);
+    setVal('histo-notes', p.histoNotes);
+    setVal('clinical-notes', p.clinicalNotes);
+    setVal('ama', p.ama);
+    setVal('alp-level', p.alp);
+    setVal('alcohol-intake', p.alcohol);
+    setVal('other-autoimmune', p.otherAutoimmune);
+    setVal('plasma-cells', p.plasmaCells);
+    setVal('biliary-changes', p.biliaryChanges);
+    setVal('atypical-histology', p.atypicalHistology);
+    setVal('treatment-status', p.treatmentStatus);
   }
 
   //File Drop Zone 
@@ -99,36 +96,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ─── Form Submission ──────────────────────────────────────────────────── */
+  /* Form Submission */
 
   document.getElementById('intake-form').addEventListener('submit', async e => {
     e.preventDefault();
     clearError();
 
     const patient = {
-      name:               getVal('patient-name'),
-      age:                getVal('patient-age'),
-      sex:                getVal('patient-sex'),
-      anaTiter:           getVal('ana-titer'),
-      asmaTiter:          getVal('asma-titer'),
-      antiLkm1:           getVal('anti-lkm1'),
-      igg:                getVal('igg-level'),
-      alt:                getVal('alt-level'),
-      ast:                getVal('ast-level'),
-      hbsag:              getVal('hbsag'),
-      antiHcv:            getVal('anti-hcv'),
-      dili:               getVal('dili'),
+      name: getVal('patient-name'),
+      age: getVal('patient-age'),
+      sex: getVal('patient-sex'),
+      anaTiter: getVal('ana-titer'),
+      asmaTiter: getVal('asma-titer'),
+      antiLkm1:getVal('anti-lkm1'),
+      igg: getVal('igg-level'),
+      alt: getVal('alt-level'),
+      ast: getVal('ast-level'),
+      hbsag: getVal('hbsag'),
+      antiHcv: getVal('anti-hcv'),
+      dili: getVal('dili'),
       interfaceHepatitis: getVal('interface-hepatitis'),
-      rosette:            getVal('rosette'),
-      histoNotes:         getVal('histo-notes'),
-      clinicalNotes:      getVal('clinical-notes'),
-      ama:                getVal('ama'),
-      alp:              getVal('alp-level'),
-      alcoholIntake:      getVal('alcohol-intake'),
-      otherAutoimmune:    getVal('other-autoimmune'),
-      plasmaCells:        getVal('plasma-cells'),
-      biliaryChanges:     getVal('biliary-changes'),
-      atypicalHistology:  getVal('atypical-histology'),
+      rosette: getVal('rosette'),
+      histoNotes: getVal('histo-notes'),
+      clinicalNotes: getVal('clinical-notes'),
+      ama: getVal('ama'),
+      alp: getVal('alp-level'),
+      alcoholIntake: getVal('alcohol-intake'),
+      otherAutoimmune: getVal('other-autoimmune'),
+      plasmaCells: getVal('plasma-cells'),
+      biliaryChanges: getVal('biliary-changes'),
+      atypicalHistology: getVal('atypical-histology'),
+      treatmentStatus: getVal('treatment-status'),
     };
 
     if (!patient.name || !patient.age || !patient.sex) {
@@ -139,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.disabled = true;
     btn.innerHTML = '<span style="opacity:0.6">Processing…</span>';
 
-    // Store file metadata (not binary — files are uploaded separately via FormData)
+    // Store file metadata 
     const fileMeta = selectedFiles.map(f => ({ name: f.name, size: f.size, type: f.type }));
 
     const updated = Store.merge({ patient, uploadedFiles: fileMeta });
@@ -160,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = '/analysis';
   });
 
-  /* ─── Helpers ──────────────────────────────────────────────────────────── */
+  /* Helpers */
 
   function getVal(id) {
     return document.getElementById(id)?.value?.trim() ?? '';

@@ -115,7 +115,7 @@ app.post('/api/session', (req, res) => {
 
   if (patient && typeof patient === 'object' && !Array.isArray(patient)) {
     updatedData.patient = updatedData.patient || {};
-    ['name', 'age', 'sex', 'anaTiter', 'asmaTiter', 'antiLkm1', 'igg', 'alt', 'ast', 'hbsag', 'antiHcv', 'dili', 'interfaceHepatitis', 'rosette', 'histoNotes', 'clinicalNotes', 'ama', 'alp', 'alcohol', 'alcoholIntake', 'otherAutoimmune', 'plasmaCells', 'biliaryChanges', 'atypicalHistology'].forEach(k => {
+    ['name', 'age', 'sex', 'anaTiter', 'asmaTiter', 'antiLkm1', 'igg', 'alt', 'ast', 'hbsag', 'antiHcv', 'dili', 'interfaceHepatitis', 'rosette', 'histoNotes', 'clinicalNotes', 'ama', 'alp', 'alcohol', 'alcoholIntake', 'otherAutoimmune', 'plasmaCells', 'biliaryChanges', 'atypicalHistology', 'treatmentStatus'].forEach(k => {
       if (patient[k] != null) updatedData.patient[k] = sanitize(patient[k]).trim();
     });
   }
