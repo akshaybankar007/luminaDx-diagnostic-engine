@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setVal('clinical-notes', p.clinicalNotes);
     setVal('ama', p.ama);
     setVal('alp-level', p.alp);
-    setVal('alcohol-intake', p.alcohol);
+    setVal('alcohol-intake', p.alcoholIntake);
     setVal('other-autoimmune', p.otherAutoimmune);
     setVal('plasma-cells', p.plasmaCells);
     setVal('biliary-changes', p.biliaryChanges);

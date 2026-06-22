@@ -231,29 +231,13 @@ app.post('/api/info', async (req, res) => {
   if (!message?.trim()) return res.status(400).json({ error: 'Message required' });
 
 const { system, turns } = buildInfoPrompt(message, history || [], req.session.clinicalData);
-  const promptContents = [{ text: system }, ...(turns || []).map(t => ({ text: typeof t === 'string' ? t : JSON.stringify(t) }))];
 
   try {
-    // corrected instantiation
     const response = await genai.models.generateContent({
       model: 'gemini-2.5-flash',
-      contents: promptContents,
+      contents: turns,
       config: {
-        systemInstruction: "You are an AIH diagnostic engine...",
-        responseMimeType: "application/json",
-        responseSchema: {
-           type: "OBJECT",
-           properties: {
-             iaihgScore: { type: "INTEGER" },
-             classification: { type: "STRING" },
-             confidence: { type: "INTEGER" },
-             treatmentIndication: { type: "STRING" },
-             scoreBreakdown: { type: "ARRAY", items: { type: "OBJECT", properties: { criterion: { type: "STRING" }, points: { type: "INTEGER" } } } },
-             narrative: { type: "STRING" },
-             recommendations: { type: "ARRAY", items: { type: "STRING" } }
-           },
-           required: ["iaihgScore", "classification", "confidence", "treatmentIndication", "scoreBreakdown", "narrative", "recommendations"]
-        }
+        systemInstruction: system
       }
     });
     
