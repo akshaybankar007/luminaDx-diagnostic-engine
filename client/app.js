@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('resize', () => {
       // If someone rotates the tablet to landscape, kill the mobile overlay
-      if (window.innerWidth > 768) {
+      if (window.innerWidth > 1024) {
         sidebar.classList.remove('open');
         overlay.classList.remove('active');
         document.body.style.overflow = ''; 

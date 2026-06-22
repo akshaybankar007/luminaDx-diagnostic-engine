@@ -688,7 +688,7 @@ p,
 }
 
 /* Desktop */
-@media (min-width: 768.01px) {
+@media (min-width: 1024.01px) {
   .md-grid-2 { grid-template-columns: 1fr 1fr; }
   .md-grid-3 { grid-template-columns: repeat(3, 1fr); }
   .md-grid-4 { grid-template-columns: repeat(4, 1fr); }
@@ -705,7 +705,7 @@ p,
 }
 
 /* Mobile */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .app-shell {
     grid-template-columns: 1fr;
   }
