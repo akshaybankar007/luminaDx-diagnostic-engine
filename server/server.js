@@ -160,7 +160,7 @@ app.post('/api/analyse', async (req, res) => {
 
   if (uploads.length > 0) {
     try {
-      const parsed = await pdfParse(buffer);
+
       const pdfTexts = [];
       for (const file of uploads) {
         if (!existsSync(file.path)) continue;
