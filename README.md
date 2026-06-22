@@ -1,28 +1,24 @@
-# LuminaDx 🧬
+# LuminaDx
 
 > An AI-assisted clinical decision support system for Autoimmune Hepatitis (AIH), because relying solely on human doctors is a statistically dangerous game.
 
-![Live Demo](https://img.shields.io/badge/Live_Demo-Coming_Soon-blue)
-![Tech Stack](https://img.shields.io/badge/Stack-Node.js_|_Express_|_Vanilla_JS-success)
-![AI](https://img.shields.io/badge/AI-Google_Gemini-orange)
-
-LuminaDx is a deterministic scoring engine paired with an LLM to automate the IAIHG (International Autoimmune Hepatitis Group) revised criteria. It ingests patient demographics, serology, and histology, runs the math, and spits out a clinical narrative and PDF report before a human doctor can even finish logging into their ancient hospital mainframe.
+Live Demo Link: 
 
 ## ✨ Features
-* **Deterministic IAIHG Scoring:** Does the math so you don't have to.
+* **Deterministic IAIHG Scoring:** Does the math so we don't have to.
 * **Gemini AI Integration:** Generates clinical narratives and recommendations.
 * **PDF Report Generation:** Creates structured clinical handoff documents via `PDFKit`.
-* **Stateless-ish Session Management:** Uses in-memory session storage so patient data disappears into the void when the server restarts, just like my motivation.
+* **Stateless-ish Session Management:** Uses in-memory session storage so patient data disappears into the void when the server restarts.
 
-## 🛠 Tech Stack
+## Tech Stack
 * **Backend:** Node.js, Express.js
-* **Frontend:** Vanilla JavaScript, HTML, CSS (No React here, we die like men)
+* **Frontend:** Vanilla JavaScript, HTML, CSS 
 * **AI:** Google GenAI SDK (Gemini 2.5 Flash)
 * **Utilities:** Multer (file uploads), Express-Session, PDFKit
 
-## 🚀 Installation
+## Installation
 
-If you're a recruiter reading this, please just click the Live Demo link at the top. If you're a masochist who wants to run this locally, proceed:
+If you're a recruiter reading this, please just click the Live Demo link at the top. If you're someone who wants to run this locally, proceed:
 
 1.  Clone the repository:
     ```bash
@@ -44,7 +40,7 @@ If you're a recruiter reading this, please just click the Live Demo link at the 
     ```bash
     npm start
     ```
-5.  Open `http://localhost:3000` and pretend to be a hepatologist.
+5.  Open `http://localhost:3000` and pretend to be a hepatologist or whatever.
 
 ## ⚠️ Disclaimer
 FOR CLINICAL DECISION SUPPORT ONLY. Not a substitute for physician judgment. If you use this to diagnose yourself and something goes wrong, that's entirely a 'you' problem.
