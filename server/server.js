@@ -70,12 +70,6 @@ app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200 }));
 
 app.set('trust proxy', 1);
 
-app.use(session({
-  store: new MemoryStore({ checkPeriod: 86400000 }),
-  secret: process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex'),
-})
-);
-
 // session
 app.use(session({
   store: new MemoryStore({ checkPeriod: 86400000 }),
